@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="آموزش کامل Cisco IOS و CLI — شبیه‌ساز، فلش‌کارت، لَب تعاملی، نقشه راه">
+<meta name="theme-color" content="#0b0f19">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ2lzY28gSU9TIE1hc3RlcnkiLCJzaG9ydF9uYW1lIjoiSU9TIE1hc3RlcnkiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwYjBmMTkiLCJ0aGVtZV9jb2xvciI6IiMwYjBmMTkiLCJsYW5nIjoiZmEiLCJkaXIiOiJydGwifQ==">
+<title>Cisco IOS Mastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0b0f19; --bg2:#111827; --bg3:#1a2332; --bgh:#243044; --code:#0d1117;
+  --text:#f1f5f9; --text2:#cbd5e1; --muted:#94a3b8;
+  --accent:#38bdf8; --as:rgba(56,189,248,.12);
+  --ok:#34d399; --oks:rgba(52,211,153,.12);
+  --warn:#fbbf24; --warns:rgba(251,191,36,.12);
+  --bad:#f87171; --bads:rgba(248,113,113,.12);
+  --pur:#a78bfa; --purs:rgba(167,139,250,.12);
+  --border:#1e293b; --bl:#334155;
+  --header-h:64px; --side:300px; --r:14px; --rs:10px;
+  --safe:env(safe-area-inset-bottom,0px);
+}
+[data-theme="light"] {
+  --bg:#f8fafc; --bg2:#ffffff; --bg3:#f1f5f9; --bgh:#e2e8f0; --code:#1e293b;
+  --text:#0f172a; --text2:#334155; --muted:#64748b;
+  --accent:#0284c7; --as:rgba(2,132,199,.1);
+  --ok:#059669; --oks:rgba(5,150,105,.1);
+  --warn:#d97706; --warns:rgba(217,119,6,.1);
+  --bad:#dc2626; --bads:rgba(220,38,38,.1);
+  --pur:#7c3aed; --purs:rgba(124,58,237,.1);
+  --border:#e2e8f0; --bl:#cbd5e1;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Vazirmatn',Tahoma,system-ui,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.85; font-size:16px; min-height:100vh;
+  -webkit-font-smoothing:antialiased; transition:background .25s,color .25s;
+}
+header {
+  position:fixed; top:0; right:0; left:0; height:var(--header-h);
+  background:color-mix(in srgb, var(--bg2) 94%, transparent); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;
+  padding:0 1rem; z-index:200;
+}
+.logo { display:flex; align-items:center; gap:.65rem; font-weight:700; font-size:1.05rem; white-space:nowrap; }
+.logo-icon {
+  width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  display:flex; align-items:center; justify-content:center; font-size:1.15rem; flex-shrink:0;
+  box-shadow:0 4px 12px rgba(14,165,233,.3);
+}
+.prog-wrap { display:flex; align-items:center; gap:.7rem; flex:1; max-width:340px; margin:0 1rem; }
+.prog-bg { flex:1; height:8px; background:var(--bg); border-radius:99px; overflow:hidden; border:1px solid var(--border); }
+.prog-fill { height:100%; width:0%; background:linear-gradient(90deg,#0ea5e9,#34d399); border-radius:99px; transition:width .4s; }
+.prog-txt { font-size:.8rem; color:var(--muted); white-space:nowrap; font-weight:500; }
+.h-act { display:flex; gap:.4rem; align-items:center; }
+.btn {
+  padding:.45rem .9rem; border-radius:var(--rs); border:none; cursor:pointer;
+  font-family:inherit; font-size:.85rem; font-weight:500; transition:all .2s;
+  display:inline-flex; align-items:center; gap:.35rem;
+}
+.btn-p { background:linear-gradient(135deg,#0ea5e9,#38bdf8); color:#0b0f19; font-weight:600; }
+.btn-p:hover { filter:brightness(1.08); }
+.btn-g { background:transparent; color:var(--muted); border:1px solid var(--bl); }
+.btn-g:hover { background:var(--bgh); color:var(--text); }
+.btn-ok { background:linear-gradient(135deg,#059669,#34d399); color:#0b0f19; padding:.6rem 1.3rem; font-weight:600; }
+.btn-ico { width:36px; height:36px; padding:0; justify-content:center; border-radius:9px; }
+.menu-btn { display:none; background:none; border:none; color:var(--text); font-size:1.35rem; cursor:pointer; width:38px; height:38px; }
+.layout { display:flex; margin-top:var(--header-h); min-height:calc(100vh - var(--header-h)); }
+aside {
+  width:var(--side); background:var(--bg2); border-left:1px solid var(--border);
+  position:fixed; top:var(--header-h); right:0; bottom:0; overflow-y:auto; padding:0 0 5rem;
+  z-index:150; transition:transform .3s;
+}
+.search { padding:.7rem 1.1rem; position:sticky; top:0; background:var(--bg2); z-index:10; border-bottom:1px solid var(--border); }
+.search input {
+  width:100%; padding:.55rem .85rem; border-radius:8px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); font-family:inherit; font-size:.88rem; outline:none;
+}
+.search input:focus { border-color:var(--accent); }
+.ns { margin:1.1rem 0; }
+.nst { padding:.3rem 1.15rem; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600; }
+.ni {
+  display:flex; align-items:center; gap:.65rem; padding:.6rem 1.15rem; cursor:pointer;
+  transition:all .15s; border-right:3px solid transparent; color:var(--muted); font-size:.88rem; font-weight:500;
+}
+.ni:hover { background:var(--bgh); color:var(--text); }
+.ni.on { background:var(--as); color:var(--accent); border-right-color:var(--accent); }
+.ni.done .nc { background:var(--ok); color:#0b0f19; border-color:var(--ok); }
+.nc {
+  width:22px; height:22px; border-radius:50%; border:2px solid var(--bl);
+  display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:700; flex-shrink:0;
+}
+.ni.on .nc { border-color:var(--accent); color:var(--accent); }
+.nt { margin-right:auto; font-size:.68rem; color:var(--muted); opacity:.7; }
+main { flex:1; margin-right:var(--side); padding:1.75rem 2.25rem 6rem; max-width:960px; width:100%; }
+.lesson { display:none; animation:fi .3s ease; }
+.lesson.on { display:block; }
+@keyframes fi { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+h1 { font-size:1.8rem; font-weight:800; margin-bottom:.45rem; line-height:1.35; }
+h2 { font-size:1.25rem; font-weight:700; margin:2rem 0 .8rem; padding-bottom:.45rem; border-bottom:1px solid var(--border); }
+h3 { font-size:1.05rem; font-weight:600; margin:1.35rem 0 .5rem; color:var(--accent); }
+p { margin-bottom:.95rem; color:var(--text2); font-size:1.01rem; }
+.lead { font-size:1.08rem; color:var(--muted); margin-bottom:1.4rem; line-height:1.8; }
+.card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); padding:1.15rem 1.3rem; margin:1.15rem 0; }
+.ct { font-weight:700; margin-bottom:.5rem; display:flex; align-items:center; gap:.45rem; font-size:1rem; }
+.c-info { border-right:4px solid var(--accent); background:linear-gradient(90deg,var(--as),var(--bg3)); }
+.c-ok { border-right:4px solid var(--ok); background:linear-gradient(90deg,var(--oks),var(--bg3)); }
+.c-warn { border-right:4px solid var(--warn); background:linear-gradient(90deg,var(--warns),var(--bg3)); }
+.c-bad { border-right:4px solid var(--bad); background:linear-gradient(90deg,var(--bads),var(--bg3)); }
+.c-pur { border-right:4px solid var(--pur); background:linear-gradient(90deg,var(--purs),var(--bg3)); }
+.cw { position:relative; margin:.9rem 0; }
+pre {
+  background:var(--code); border:1px solid var(--border); border-radius:var(--rs);
+  padding:1.1rem 1.2rem; overflow-x:auto; font-family:Consolas,'Courier New',monospace;
+  font-size:.85rem; line-height:1.7; direction:ltr; text-align:left; margin:0; color:#e2e8f0;
+}
+[data-theme="light"] pre { color:#e2e8f0; }
+.cpb {
+  position:absolute; top:7px; left:7px; background:var(--bgh); border:1px solid var(--bl);
+  color:var(--muted); border-radius:6px; padding:.25rem .55rem; font-size:.72rem; cursor:pointer;
+  font-family:inherit; opacity:.75; transition:all .2s; z-index:5;
+}
+.cpb:hover { opacity:1; color:var(--text); }
+.cpb.ok { color:var(--ok); border-color:var(--ok); }
+code {
+  font-family:Consolas,'Courier New',monospace; background:var(--as);
+  padding:.12rem .35rem; border-radius:4px; font-size:.87em; direction:ltr; display:inline-block; color:var(--accent);
+}
+pre code { background:none; padding:0; color:inherit; }
+.pr { color:#34d399; font-weight:600; }
+.cm { color:#7dd3fc; }
+.co { color:#64748b; }
+.ou { color:#94a3b8; }
+table { width:100%; border-collapse:collapse; margin:1.1rem 0; font-size:.9rem; }
+th,td { padding:.7rem .9rem; text-align:right; border-bottom:1px solid var(--border); }
+th { background:var(--bg2); font-weight:600; color:var(--muted); font-size:.82rem; }
+tr:hover td { background:var(--as); }
+td { color:var(--text2); }
+.diagram { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); padding:1.3rem; margin:1.3rem 0; text-align:center; overflow-x:auto; }
+ul,ol { margin:.65rem 0 1rem 1.4rem; }
+li { margin-bottom:.4rem; color:var(--text2); }
+.tag { display:inline-block; padding:.18rem .6rem; border-radius:99px; font-size:.72rem; font-weight:600; }
+.tb { background:var(--as); color:var(--accent); }
+.tg { background:var(--oks); color:var(--ok); }
+.to { background:var(--warns); color:var(--warn); }
+.tp { background:var(--purs); color:var(--pur); }
+.qo {
+  display:block; background:var(--bg2); border:1px solid var(--border); border-radius:var(--rs);
+  padding:.85rem 1.1rem; margin:.5rem 0; cursor:pointer; transition:all .2s; color:var(--text2); font-weight:500;
+}
+.qo:hover { border-color:var(--accent); background:var(--bgh); color:var(--text); }
+.qo.ok { border-color:var(--ok); background:var(--oks); color:var(--ok); }
+.qo.bad { border-color:var(--bad); background:var(--bads); color:var(--bad); }
+.lf {
+  margin-top:2.2rem; padding-top:1.3rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; gap:.8rem; flex-wrap:wrap;
+}
+.hero { text-align:center; padding:1.1rem 0 .4rem; }
+.hero h1 {
+  font-size:2rem;
+  background:linear-gradient(135deg,#38bdf8,#34d399);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:.9rem; margin:1.5rem 0; }
+.sc { background:var(--bg3); border:1px solid var(--border); border-radius:var(--r); padding:1.1rem; text-align:center; }
+.sv { font-size:1.6rem; font-weight:800; color:var(--accent); }
+.sl { font-size:.82rem; color:var(--muted); margin-top:.2rem; font-weight:500; }
+.sb {
+  background:var(--bg2); border:1px solid var(--border); border-radius:var(--rs);
+  padding:.9rem 1.1rem; margin:.7rem 0; display:flex; gap:.8rem; align-items:flex-start;
+}
+.sn {
+  width:28px; height:28px; background:var(--as); color:var(--accent); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.8rem; flex-shrink:0;
+}
+.feats { display:flex; flex-wrap:wrap; gap:.45rem; margin:1rem 0; }
+.fc { background:var(--bg3); border:1px solid var(--border); border-radius:99px; padding:.35rem .8rem; font-size:.8rem; color:var(--text2); font-weight:500; }
+/* Roadmap */
+.rm { position:relative; padding:1rem 0 1rem 1.4rem; }
+.rm::before { content:''; position:absolute; right:10px; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--accent),var(--ok),var(--pur)); border-radius:99px; }
+.rmi { position:relative; padding:0 0 1.5rem 0; padding-right:2rem; }
+.rmi::before { content:''; position:absolute; right:-1.4rem; top:5px; width:13px; height:13px; border-radius:50%; background:var(--bg3); border:3px solid var(--accent); z-index:2; }
+.rmi.done::before { background:var(--ok); border-color:var(--ok); }
+.rmi.act::before { background:var(--accent); box-shadow:0 0 0 4px var(--as); }
+.rmi h3 { margin:0 0 .3rem; font-size:1rem; }
+.rmi p { margin:0; font-size:.88rem; color:var(--muted); }
+/* CLI Simulator */
+.cli-box {
+  background:#0a0e14; border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin:1.2rem 0;
+  font-family:Consolas,'Courier New',monospace; direction:ltr; text-align:left;
+}
+.cli-bar { background:#1a2332; padding:.5rem 1rem; display:flex; gap:.5rem; align-items:center; border-bottom:1px solid var(--border); }
+.cli-dot { width:10px; height:10px; border-radius:50%; }
+.cli-out {
+  height:280px; overflow-y:auto; padding:1rem; color:#94a3b8; font-size:.85rem; line-height:1.65;
+  white-space:pre-wrap; word-break:break-all;
+}
+.cli-out .p { color:#34d399; }
+.cli-out .c { color:#7dd3fc; }
+.cli-out .e { color:#f87171; }
+.cli-in-wrap { display:flex; border-top:1px solid var(--border); background:#0d1117; }
+.cli-prompt { color:#34d399; padding:.7rem 0 .7rem .9rem; font-weight:600; font-size:.85rem; white-space:nowrap; }
+.cli-in {
+  flex:1; background:transparent; border:none; outline:none; color:#e2e8f0;
+  font-family:inherit; font-size:.85rem; padding:.7rem .5rem; direction:ltr;
+}
+/* Flashcards */
+.fc-area { perspective:1000px; max-width:480px; margin:1.5rem auto; }
+.flash {
+  width:100%; min-height:220px; position:relative; cursor:pointer;
+  transition:transform .5s; transform-style:preserve-3d;
+}
+.flash.flipped { transform:rotateY(180deg); }
+.flash-f, .flash-b {
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--r);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:1.5rem; border:1px solid var(--border); text-align:center;
+}
+.flash-f { background:var(--bg3); }
+.flash-b { background:linear-gradient(135deg,var(--as),var(--bg3)); transform:rotateY(180deg); border-color:var(--accent); }
+.flash-f h3 { font-size:1.3rem; margin-bottom:.5rem; color:var(--accent); }
+.flash-b p { font-size:1.05rem; color:var(--text2); line-height:1.7; }
+.fc-nav { display:flex; justify-content:center; gap:.8rem; margin:1rem 0; flex-wrap:wrap; }
+.fc-count { text-align:center; color:var(--muted); font-size:.9rem; margin-bottom:.5rem; }
+/* Lab checklist */
+.lab-item {
+  display:flex; align-items:flex-start; gap:.8rem; padding:.85rem 1rem;
+  background:var(--bg2); border:1px solid var(--border); border-radius:var(--rs); margin:.5rem 0;
+  cursor:pointer; transition:all .2s;
+}
+.lab-item:hover { border-color:var(--accent); }
+.lab-item.checked { border-color:var(--ok); background:var(--oks); }
+.lab-check {
+  width:22px; height:22px; border:2px solid var(--bl); border-radius:6px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:.75rem; margin-top:2px; transition:all .2s;
+}
+.lab-item.checked .lab-check { background:var(--ok); border-color:var(--ok); color:#0b0f19; }
+/* Mobile bar */
+.mbar {
+  display:none; position:fixed; bottom:0; left:0; right:0;
+  background:color-mix(in srgb, var(--bg2) 96%, transparent); backdrop-filter:blur(12px);
+  border-top:1px solid var(--border); padding:.45rem .6rem calc(.45rem + var(--safe));
+  z-index:180; justify-content:space-around; align-items:center;
+}
+.mbar button {
+  background:none; border:none; color:var(--muted); font-family:inherit; font-size:.68rem;
+  display:flex; flex-direction:column; align-items:center; gap:.15rem; cursor:pointer;
+  padding:.25rem .5rem; border-radius:8px;
+}
+.mbar .ico { font-size:1.15rem; }
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:140; }
+.overlay.on { display:block; }
+.toast {
+  position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(80px);
+  background:var(--bg3); border:1px solid var(--ok); color:var(--ok);
+  padding:.65rem 1.3rem; border-radius:10px; font-weight:600; font-size:.88rem;
+  z-index:300; transition:transform .3s; pointer-events:none;
+}
+.toast.on { transform:translateX(-50%) translateY(0); }
+kbd { background:var(--bgh); border:1px solid var(--bl); border-radius:4px; padding:.08rem .35rem; font-family:inherit; font-size:.7rem; color:var(--text2); }
+@media (max-width:900px) {
+  .menu-btn { display:flex; align-items:center; justify-content:center; }
+  aside { transform:translateX(100%); width:min(300px,86vw); box-shadow:-8px 0 28px rgba(0,0,0,.35); }
+  aside.open { transform:translateX(0); }
+  main { margin-right:0; padding:1.3rem 1.1rem 5.5rem; }
+  .prog-wrap { display:none; }
+  .mbar { display:flex; }
+  h1 { font-size:1.45rem; }
+  .hero h1 { font-size:1.6rem; }
+}
+@media (max-width:480px) {
+  h1 { font-size:1.3rem; }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .lf { flex-direction:column; align-items:stretch; }
+  .lf .btn { width:100%; justify-content:center; }
+  pre { font-size:.78rem; }
+}
+@media print {
+  header,aside,.mbar,.lf,.cpb,.overlay { display:none !important; }
+  main { margin:0; padding:1rem; max-width:100%; }
+  .lesson { display:block !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:.55rem;">
+    <button class="menu-btn" onclick="toggleSide()" aria-label="منو">☰</button>
+    <div class="logo"><div class="logo-icon">🌐</div><span>IOS Mastery</span></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-bg"><div class="prog-fill" id="pFill"></div></div>
+    <span class="prog-txt" id="pTxt">۰٪</span>
+  </div>
+  <div class="h-act">
+    <button class="btn btn-g btn-ico" onclick="toggleTheme()" title="تم" id="themeBtn">🌙</button>
+    <button class="btn btn-g btn-ico" onclick="showL('roadmap')" title="نقشه راه">🗺️</button>
+    <button class="btn btn-g btn-ico" onclick="exportProgress()" title="خروجی پیشرفت">📄</button>
+    <button class="btn btn-g" onclick="resetP()" title="بازنشانی">↺</button>
+  </div>
+</header>
+<div class="overlay" id="ov" onclick="toggleSide()"></div>
+
+<div class="layout">
+<aside id="side">
+  <div class="search"><input type="search" id="sIn" placeholder="جستجوی درس..." oninput="filterL(this.value)" autocomplete="off"></div>
+  <div class="ns">
+    <div class="nst">شروع</div>
+    <div class="ni on" data-l="welcome" data-t="خوش‌آمدگویی" onclick="showL('welcome')"><span class="nc">1</span><span>خوش‌آمدگویی</span></div>
+    <div class="ni" data-l="roadmap" data-t="نقشه راه" onclick="showL('roadmap')"><span class="nc">★</span><span>نقشه راه</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">ابزارها</div>
+    <div class="ni" data-l="cli-sim" data-t="شبیه‌ساز CLI" onclick="showL('cli-sim')"><span class="nc">⌨</span><span>شبیه‌ساز CLI</span></div>
+    <div class="ni" data-l="flashcards" data-t="فلش‌کارت" onclick="showL('flashcards')"><span class="nc">🎴</span><span>فلش‌کارت دستورات</span></div>
+    <div class="ni" data-l="lab" data-t="لَب تعاملی" onclick="showL('lab')"><span class="nc">🧪</span><span>لَب تعاملی</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">مبانی</div>
+    <div class="ni" data-l="os-overview" data-t="سیستم‌عامل‌ها" onclick="showL('os-overview')"><span class="nc">2</span><span>سیستم‌عامل‌های سیسکو</span><span class="nt">۸د</span></div>
+    <div class="ni" data-l="ios-intro" data-t="معرفی IOS" onclick="showL('ios-intro')"><span class="nc">3</span><span>معرفی Cisco IOS</span><span class="nt">۷د</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">CLI و مودها</div>
+    <div class="ni" data-l="cli-access" data-t="دسترسی CLI" onclick="showL('cli-access')"><span class="nc">4</span><span>دسترسی به CLI</span><span class="nt">۱۰د</span></div>
+    <div class="ni" data-l="modes" data-t="سلسله‌مراتب مودها" onclick="showL('modes')"><span class="nc">5</span><span>سلسله‌مراتب مودها</span><span class="nt">۱۲د</span></div>
+    <div class="ni" data-l="user-exec" data-t="User EXEC" onclick="showL('user-exec')"><span class="nc">6</span><span>User EXEC</span><span class="nt">۶د</span></div>
+    <div class="ni" data-l="priv-exec" data-t="Privileged EXEC" onclick="showL('priv-exec')"><span class="nc">7</span><span>Privileged EXEC</span><span class="nt">۸د</span></div>
+    <div class="ni" data-l="global" data-t="Global Config" onclick="showL('global')"><span class="nc">8</span><span>Global Config</span><span class="nt">۱۰د</span></div>
+    <div class="ni" data-l="submodes" data-t="Submodes" onclick="showL('submodes')"><span class="nc">9</span><span>مودهای فرعی</span><span class="nt">۱۲د</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">پیکربندی</div>
+    <div class="ni" data-l="show-cmd" data-t="دستورات Show" onclick="showL('show-cmd')"><span class="nc">10</span><span>دستورات Show</span><span class="nt">۱۰د</span></div>
+    <div class="ni" data-l="iface" data-t="Interface" onclick="showL('iface')"><span class="nc">11</span><span>پیکربندی Interface</span><span class="nt">۱۵د</span></div>
+    <div class="ni" data-l="save" data-t="ذخیره Config" onclick="showL('save')"><span class="nc">12</span><span>ذخیره Config</span><span class="nt">۷د</span></div>
+    <div class="ni" data-l="nav" data-t="ناوبری" onclick="showL('nav')"><span class="nc">13</span><span>نکات ناوبری</span><span class="nt">۸د</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">ماژول‌های بعدی</div>
+    <div class="ni" data-l="switching" data-t="Switching" onclick="showL('switching')"><span class="nc">14</span><span>Switching پایه</span><span class="nt">۲۰د</span></div>
+    <div class="ni" data-l="routing" data-t="Routing" onclick="showL('routing')"><span class="nc">15</span><span>Routing پایه</span><span class="nt">۲۰د</span></div>
+  </div>
+  <div class="ns">
+    <div class="nst">تمرین</div>
+    <div class="ni" data-l="quiz" data-t="آزمون" onclick="showL('quiz')"><span class="nc">16</span><span>آزمون نهایی</span><span class="nt">۱۰د</span></div>
+  </div>
+</aside>
+
+<main>
+
+<!-- WELCOME -->
+<section class="lesson on" id="l-welcome">
+  <div class="hero">
+    <h1>Cisco IOS Mastery</h1>
+    <p class="lead">آموزش کامل IOS و CLI — شبیه‌ساز، فلش‌کارت، لَب تعاملی، نقشه راه و تم روشن/تاریک</p>
+  </div>
+  <div class="stats">
+    <div class="sc"><div class="sv">۱۶+</div><div class="sl">درس و ابزار</div></div>
+    <div class="sc"><div class="sv">۵۰+</div><div class="sl">دستور</div></div>
+    <div class="sc"><div class="sv">~۳س</div><div class="sl">زمان تخمینی</div></div>
+    <div class="sc"><div class="sv" id="statP">۰٪</div><div class="sl">پیشرفت</div></div>
+  </div>
+  <div class="feats">
+    <span class="fc">📱 ریسپانسیو</span><span class="fc">🗺️ نقشه راه</span><span class="fc">⌨️ شبیه‌ساز CLI</span>
+    <span class="fc">🎴 فلش‌کارت</span><span class="fc">🧪 لَب تعاملی</span><span class="fc">🌙 روشن/تاریک</span>
+    <span class="fc">📄 خروجی پیشرفت</span><span class="fc">💾 ذخیره محلی</span>
+  </div>
+  <div class="card c-info"><div class="ct">🎯 هدف</div>
+    <p>تسلط بر CLI سیسکو، پیکربندی پایه، عیب‌یابی با Show، و آمادگی ورود به Switching و Routing.</p>
+  </div>
+  <div class="card c-pur"><div class="ct">⌨️ میانبرها</div>
+    <p><kbd>←</kbd> <kbd>→</kbd> درس · <kbd>M</kbd> منو · <kbd>R</kbd> نقشه · <kbd>T</kbd> تم · <kbd>C</kbd> شبیه‌ساز</p>
+  </div>
+  <div class="lf"><span></span><button class="btn btn-ok" onclick="done('welcome')">شروع ←</button></div>
+</section>
+
+<!-- ROADMAP -->
+<section class="lesson" id="l-roadmap">
+  <h1>🗺️ نقشه راه یادگیری</h1>
+  <p class="lead">از مبتدی تا آمادگی CCNA — این سایت هسته فاز ۱ و شروع فاز ۲/۳ است.</p>
+  <div class="rm">
+    <div class="rmi act"><h3>فاز ۰ — پیش‌نیاز</h3><p>OSI · IP · Subnetting · مفاهیم Router/Switch</p><span class="tag tb">۱–۲ هفته</span></div>
+    <div class="rmi act"><h3>فاز ۱ — IOS و CLI</h3><p>مودها · Show · Interface · ذخیره Config · ناوبری</p><span class="tag tg">۳–۵ روز</span></div>
+    <div class="rmi act"><h3>فاز ۲ — Switching</h3><p>VLAN · Trunk · STP · Port Security</p><span class="tag to">۲–۳ هفته</span></div>
+    <div class="rmi act"><h3>فاز ۳ — Routing</h3><p>Static · OSPF · Inter-VLAN Routing</p><span class="tag to">۲–۳ هفته</span></div>
+    <div class="rmi"><h3>فاز ۴ — سرویس و امنیت</h3><p>DHCP · NAT · ACL · SSH سخت‌سازی</p><span class="tag tp">۲ هفته</span></div>
+    <div class="rmi"><h3>فاز ۵ — Wireless و اتوماسیون</h3><p>WLAN · API · Python شبکه</p><span class="tag tp">۲ هفته</span></div>
+    <div class="rmi"><h3>فاز ۶ — آمادگی CCNA</h3><p>مرور · لَب جامع · تست زمان‌دار</p><span class="tag tb">۳–۴ هفته</span></div>
+  </div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('welcome')">→ قبلی</button>
+    <button class="btn btn-p" onclick="showL('cli-sim')">شبیه‌ساز CLI ←</button>
+  </div>
+</section>
+
+<!-- CLI SIMULATOR -->
+<section class="lesson" id="l-cli-sim">
+  <h1>⌨️ شبیه‌ساز CLI</h1>
+  <p class="lead">دستورات واقعی تایپ کنید. از <code>help</code> یا <code>?</code> برای لیست دستورات پشتیبانی‌شده استفاده کنید.</p>
+  <div class="cli-box">
+    <div class="cli-bar">
+      <span class="cli-dot" style="background:#f87171"></span>
+      <span class="cli-dot" style="background:#fbbf24"></span>
+      <span class="cli-dot" style="background:#34d399"></span>
+      <span style="color:var(--muted);font-size:.8rem;margin-right:.5rem;font-family:Vazirmatn">IOS Simulator</span>
+      <button class="btn btn-g" style="margin-right:auto;font-size:.75rem;padding:.25rem .6rem" onclick="cliClear()">پاک کردن</button>
+    </div>
+    <div class="cli-out" id="cliOut"></div>
+    <div class="cli-in-wrap">
+      <span class="cli-prompt" id="cliPr">Router&gt;</span>
+      <input class="cli-in" id="cliIn" autocomplete="off" spellcheck="false" placeholder="دستور را تایپ کنید...">
+    </div>
+  </div>
+  <div class="card c-info"><div class="ct">دستورات پشتیبانی‌شده</div>
+    <p style="margin:0;font-size:.9rem"><code>enable</code> <code>disable</code> <code>configure terminal</code> <code>hostname</code> <code>interface</code> <code>ip address</code> <code>no shutdown</code> <code>exit</code> <code>end</code> <code>show version</code> <code>show ip interface brief</code> <code>show running-config</code> <code>ping</code> <code>help</code> <code>?</code> <code>clear</code></p>
+  </div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('roadmap')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('cli-sim')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('flashcards')">فلش‌کارت ←</button>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section class="lesson" id="l-flashcards">
+  <h1>🎴 فلش‌کارت دستورات</h1>
+  <p class="lead">روی کارت کلیک کنید تا برگردانید. با دکمه‌ها جابه‌جا شوید.</p>
+  <div class="fc-count" id="fcCount">۱ / ۱۰</div>
+  <div class="fc-area">
+    <div class="flash" id="flash" onclick="flipCard()">
+      <div class="flash-f"><h3 id="fcFront">enable</h3><p style="color:var(--muted);font-size:.85rem">کلیک برای دیدن پاسخ</p></div>
+      <div class="flash-b"><p id="fcBack">ورود از User EXEC به Privileged EXEC</p></div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-g" onclick="fcPrev()">→ قبلی</button>
+    <button class="btn btn-p" onclick="flipCard()">برگردان</button>
+    <button class="btn btn-g" onclick="fcNext()">بعدی ←</button>
+  </div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('cli-sim')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('flashcards')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('lab')">لَب ←</button>
+  </div>
+</section>
+
+<!-- LAB -->
+<section class="lesson" id="l-lab">
+  <h1>🧪 لَب تعاملی — تنظیمات اولیه روتر</h1>
+  <p class="lead">این مراحل را در Packet Tracer یا شبیه‌ساز بالا انجام دهید و تیک بزنید.</p>
+  <div class="card c-warn"><div class="ct">هدف لَب</div>
+    <p style="margin:0">یک روتر را از حالت خام تا داشتن hostname، پسورد، IP روی G0/0 و ذخیره config برسانید.</p>
+  </div>
+  <div id="labList"></div>
+  <div class="card c-ok" id="labDone" style="display:none"><div class="ct">🎉 عالی!</div>
+    <p style="margin:0">همه مراحل لَب را انجام دادید. حالا به سراغ Switching و Routing بروید.</p>
+  </div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('flashcards')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('lab')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('os-overview')">درس‌ها ←</button>
+  </div>
+</section>
+
+<!-- OS OVERVIEW (condensed core content) -->
+<section class="lesson" id="l-os-overview">
+  <h1>سیستم‌عامل‌های سیسکو</h1>
+  <p class="lead">IOS · IOS XE · NX-OS · IOS XR — هر کدام برای حوزه خاص.</p>
+  <table>
+    <thead><tr><th>OS</th><th>معماری</th><th>کاربرد</th><th>CLI</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag tb">IOS</span></td><td>Monolithic</td><td>دسترسی / شعبه</td><td>کلاسیک</td></tr>
+      <tr><td><span class="tag tg">IOS XE</span></td><td>Linux + IOSd</td><td>سازمانی مدرن</td><td>≈ IOS</td></tr>
+      <tr><td><span class="tag to">NX-OS</span></td><td>Linux HA</td><td>دیتاسنتر</td><td>شبیه + تفاوت</td></tr>
+      <tr><td><span class="tag tp">IOS XR</span></td><td>ماژولار</td><td>SP / Core</td><td>متفاوت‌تر</td></tr>
+    </tbody>
+  </table>
+  <div class="card c-info"><div class="ct">💡 نکته</div><p>IOS و IOS XE از نظر دستورات تقریباً یکسان‌اند — پایه این دوره.</p></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('lab')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('os-overview')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('ios-intro')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-ios-intro">
+  <h1>معرفی Cisco IOS</h1>
+  <p class="lead">سیستم‌عامل شبکه سیسکو — مدیریت سخت‌افزار، پروتکل‌ها و CLI.</p>
+  <table>
+    <thead><tr><th>فایل</th><th>محل</th><th>بعد از خاموشی</th></tr></thead>
+    <tbody>
+      <tr><td><code>running-config</code></td><td>RAM</td><td>پاک ❌</td></tr>
+      <tr><td><code>startup-config</code></td><td>NVRAM</td><td>باقی ✅</td></tr>
+    </tbody>
+  </table>
+  <div class="card c-bad"><div class="ct">🚨 هشدار</div>
+    <p>بدون <code>copy run start</code> بعد از ریبوت تنظیمات از بین می‌رود.</p>
+    <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button><pre><code><span class="pr">Router#</span> <span class="cm">copy running-config startup-config</span></code></pre></div>
+  </div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('os-overview')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('ios-intro')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('cli-access')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-cli-access">
+  <h1>دسترسی به CLI</h1>
+  <p class="lead">Console · Telnet · SSH · AUX</p>
+  <table>
+    <thead><tr><th>روش</th><th>IP؟</th><th>امنیت</th></tr></thead>
+    <tbody>
+      <tr><td>Console</td><td>خیر</td><td>فیزیکی</td></tr>
+      <tr><td>Telnet</td><td>بله</td><td>پایین ❌</td></tr>
+      <tr><td>SSH</td><td>بله</td><td>بالا ✅</td></tr>
+    </tbody>
+  </table>
+  <h3>تنظیم SSH</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router(config)#</span> <span class="cm">hostname R1</span>
+<span class="pr">R1(config)#</span> <span class="cm">ip domain-name lab.local</span>
+<span class="pr">R1(config)#</span> <span class="cm">crypto key generate rsa modulus 2048</span>
+<span class="pr">R1(config)#</span> <span class="cm">username admin privilege 15 secret StrongPass</span>
+<span class="pr">R1(config)#</span> <span class="cm">line vty 0 15</span>
+<span class="pr">R1(config-line)#</span> <span class="cm">login local</span>
+<span class="pr">R1(config-line)#</span> <span class="cm">transport input ssh</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('ios-intro')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('cli-access')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('modes')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-modes">
+  <h1>سلسله‌مراتب مودها</h1>
+  <p class="lead">User → Privileged → Global Config → Submodes</p>
+  <table>
+    <thead><tr><th>مود</th><th>پرامپت</th><th>ورود</th></tr></thead>
+    <tbody>
+      <tr><td>User EXEC</td><td><code>Router&gt;</code></td><td>لاگین</td></tr>
+      <tr><td>Privileged</td><td><code>Router#</code></td><td>enable</td></tr>
+      <tr><td>Global Config</td><td><code>(config)#</code></td><td>configure terminal</td></tr>
+      <tr><td>Interface</td><td><code>(config-if)#</code></td><td>interface ...</td></tr>
+    </tbody>
+  </table>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router&gt;</span> <span class="cm">enable</span>
+<span class="pr">Router#</span> <span class="cm">configure terminal</span>
+<span class="pr">Router(config)#</span> <span class="cm">interface g0/0</span>
+<span class="pr">Router(config-if)#</span> <span class="cm">exit</span>
+<span class="pr">Router(config)#</span> <span class="cm">end</span></code></pre></div>
+  <div class="card c-ok"><div class="ct">✅ قانون</div><p><code>exit</code> = یک سطح · <code>end</code> / Ctrl+Z = Privileged · همیشه به پرامپت نگاه کنید.</p></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('cli-access')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('modes')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('user-exec')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-user-exec">
+  <h1>User EXEC Mode</h1>
+  <p class="lead">پرامپت <code>Router&gt;</code> — فقط مشاهده و تست.</p>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router&gt;</span> <span class="cm">show version</span>
+<span class="pr">Router&gt;</span> <span class="cm">show ip interface brief</span>
+<span class="pr">Router&gt;</span> <span class="cm">ping 192.168.1.10</span>
+<span class="pr">Router&gt;</span> <span class="cm">enable</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('modes')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('user-exec')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('priv-exec')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-priv-exec">
+  <h1>Privileged EXEC Mode</h1>
+  <p class="lead">پرامپت <code>Router#</code> — دسترسی کامل مدیریتی.</p>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router#</span> <span class="cm">show running-config</span>
+<span class="pr">Router#</span> <span class="cm">show startup-config</span>
+<span class="pr">Router#</span> <span class="cm">copy run start</span>
+<span class="pr">Router#</span> <span class="cm">show ip route</span>
+<span class="pr">Router#</span> <span class="cm">reload</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('user-exec')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('priv-exec')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('global')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-global">
+  <h1>Global Configuration</h1>
+  <p class="lead">پرامپت <code>Router(config)#</code></p>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router#</span> <span class="cm">conf t</span>
+<span class="pr">Router(config)#</span> <span class="cm">hostname R1</span>
+<span class="pr">R1(config)#</span> <span class="cm">enable secret MyStr0ngP@ss</span>
+<span class="pr">R1(config)#</span> <span class="cm">no ip domain-lookup</span>
+<span class="pr">R1(config)#</span> <span class="cm">banner motd # No Unauthorized Access #</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('priv-exec')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('global')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('submodes')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-submodes">
+  <h1>مودهای فرعی</h1>
+  <p class="lead">Interface · Line · Router · VLAN</p>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1(config)#</span> <span class="cm">interface g0/0</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">ip address 10.10.10.1 255.255.255.0</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">no shutdown</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">exit</span>
+<span class="pr">R1(config)#</span> <span class="cm">line vty 0 15</span>
+<span class="pr">R1(config-line)#</span> <span class="cm">transport input ssh</span>
+<span class="pr">R1(config)#</span> <span class="cm">router ospf 1</span>
+<span class="pr">R1(config-router)#</span> <span class="cm">network 10.10.10.0 0.0.0.255 area 0</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('global')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('submodes')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('show-cmd')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-show-cmd">
+  <h1>دستورات Show</h1>
+  <table>
+    <thead><tr><th>دستور</th><th>کاربرد</th></tr></thead>
+    <tbody>
+      <tr><td><code>show ip interface brief</code></td><td>خلاصه اینترفیس + IP</td></tr>
+      <tr><td><code>show running-config</code></td><td>پیکربندی فعلی</td></tr>
+      <tr><td><code>show ip route</code></td><td>جدول مسیریابی</td></tr>
+      <tr><td><code>show cdp neighbors</code></td><td>همسایه‌های سیسکو</td></tr>
+      <tr><td><code>show vlan brief</code></td><td>VLANها</td></tr>
+    </tbody>
+  </table>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1#</span> <span class="cm">show run | include interface</span>
+<span class="pr">R1#</span> <span class="cm">show run | section g0/0</span>
+<span class="pr">R1#</span> <span class="cm">do show ip int br</span>  <span class="co">! از داخل config</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('submodes')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('show-cmd')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('iface')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-iface">
+  <h1>پیکربندی Interface</h1>
+  <h3>روتر — IP</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1(config)#</span> <span class="cm">interface g0/0</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">description LAN</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">ip address 192.168.10.1 255.255.255.0</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">no shutdown</span></code></pre></div>
+  <h3>سوئیچ — Access + VLAN</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">SW1(config)#</span> <span class="cm">vlan 30</span>
+<span class="pr">SW1(config-vlan)#</span> <span class="cm">name Sales</span>
+<span class="pr">SW1(config)#</span> <span class="cm">interface range fa0/1 - 12</span>
+<span class="pr">SW1(config-if-range)#</span> <span class="cm">switchport mode access</span>
+<span class="pr">SW1(config-if-range)#</span> <span class="cm">switchport access vlan 30</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('show-cmd')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('iface')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('save')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-save">
+  <h1>ذخیره Config</h1>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router#</span> <span class="cm">copy run start</span>
+<span class="pr">Router#</span> <span class="cm">wr</span>
+<span class="pr">Router#</span> <span class="cm">erase startup-config</span>
+<span class="pr">Router#</span> <span class="cm">reload</span></code></pre></div>
+  <div class="card c-bad"><div class="ct">🚨 قانون طلایی</div><p>بعد از هر پیکربندی موفق: <code>copy run start</code></p></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('iface')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('save')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('nav')">بعدی ←</button>
+  </div>
+</section>
+
+<section class="lesson" id="l-nav">
+  <h1>نکات ناوبری</h1>
+  <table>
+    <thead><tr><th>کلید</th><th>کاربرد</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>Tab</kbd></td><td>تکمیل خودکار</td></tr>
+      <tr><td><kbd>?</kbd></td><td>کمک</td></tr>
+      <tr><td><kbd>Ctrl+Z</kbd></td><td>خروج به Privileged</td></tr>
+      <tr><td><kbd>Ctrl+A</kbd> / <kbd>E</kbd></td><td>ابتدا / انتهای خط</td></tr>
+    </tbody>
+  </table>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">Router#</span> <span class="cm">conf t</span>
+<span class="pr">Router#</span> <span class="cm">sh ip int br</span>
+<span class="pr">Router#</span> <span class="cm">int g0/0</span>
+<span class="pr">Router(config-if)#</span> <span class="cm">do sh ip int br</span></code></pre></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('save')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('nav')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('switching')">Switching ←</button>
+  </div>
+</section>
+
+<!-- SWITCHING MODULE -->
+<section class="lesson" id="l-switching">
+  <h1>🔀 Switching پایه</h1>
+  <p class="lead">VLAN · Trunk · Access Port · Port Security — فاز ۲ نقشه راه</p>
+  <h2>VLAN چیست؟</h2>
+  <p>جداسازی منطقی شبکه در لایه ۲. دستگاه‌های VLANهای مختلف حتی روی یک سوئیچ به هم دسترسی لایه ۲ ندارند مگر با Router (Inter-VLAN Routing).</p>
+  <h3>ساخت VLAN و Access Port</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">SW1(config)#</span> <span class="cm">vlan 10</span>
+<span class="pr">SW1(config-vlan)#</span> <span class="cm">name Engineering</span>
+<span class="pr">SW1(config-vlan)#</span> <span class="cm">exit</span>
+<span class="pr">SW1(config)#</span> <span class="cm">interface fa0/1</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport mode access</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport access vlan 10</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">spanning-tree portfast</span></code></pre></div>
+  <h3>Trunk بین دو سوئیچ</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">SW1(config)#</span> <span class="cm">interface gi0/1</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport mode trunk</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport trunk allowed vlan 10,20,30</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport trunk native vlan 99</span></code></pre></div>
+  <h3>Port Security</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">SW1(config)#</span> <span class="cm">interface fa0/5</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport mode access</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport port-security</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport port-security maximum 2</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport port-security mac-address sticky</span>
+<span class="pr">SW1(config-if)#</span> <span class="cm">switchport port-security violation restrict</span></code></pre></div>
+  <h3>دستورات بررسی</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">SW1#</span> <span class="cm">show vlan brief</span>
+<span class="pr">SW1#</span> <span class="cm">show interfaces trunk</span>
+<span class="pr">SW1#</span> <span class="cm">show port-security interface fa0/5</span>
+<span class="pr">SW1#</span> <span class="cm">show mac address-table</span></code></pre></div>
+  <div class="card c-info"><div class="ct">📌 تمرین</div><p>در Packet Tracer دو سوئیچ به هم Trunk کنید، سه VLAN بسازید و PCها را در VLANهای مختلف بگذارید. با ping بین VLANها (بدون روتر) باید fail شود.</p></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('nav')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('switching')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('routing')">Routing ←</button>
+  </div>
+</section>
+
+<!-- ROUTING MODULE -->
+<section class="lesson" id="l-routing">
+  <h1>🛤️ Routing پایه</h1>
+  <p class="lead">Static Route · Default Route · OSPF تک‌ناحیه‌ای — فاز ۳ نقشه راه</p>
+  <h2>Static Route</h2>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1(config)#</span> <span class="cm">ip route 192.168.2.0 255.255.255.0 10.0.0.2</span>
+<span class="pr">R1(config)#</span> <span class="cm">ip route 0.0.0.0 0.0.0.0 10.0.0.2</span>  <span class="co">! default route</span></code></pre></div>
+  <h2>OSPF تک‌ناحیه‌ای</h2>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1(config)#</span> <span class="cm">router ospf 1</span>
+<span class="pr">R1(config-router)#</span> <span class="cm">router-id 1.1.1.1</span>
+<span class="pr">R1(config-router)#</span> <span class="cm">network 10.0.0.0 0.0.0.255 area 0</span>
+<span class="pr">R1(config-router)#</span> <span class="cm">network 192.168.1.0 0.0.0.255 area 0</span>
+<span class="pr">R1(config-router)#</span> <span class="cm">passive-interface g0/1</span></code></pre></div>
+  <h2>Inter-VLAN Routing (Router-on-a-Stick)</h2>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1(config)#</span> <span class="cm">interface g0/0.10</span>
+<span class="pr">R1(config-subif)#</span> <span class="cm">encapsulation dot1Q 10</span>
+<span class="pr">R1(config-subif)#</span> <span class="cm">ip address 192.168.10.1 255.255.255.0</span>
+<span class="pr">R1(config)#</span> <span class="cm">interface g0/0.20</span>
+<span class="pr">R1(config-subif)#</span> <span class="cm">encapsulation dot1Q 20</span>
+<span class="pr">R1(config-subif)#</span> <span class="cm">ip address 192.168.20.1 255.255.255.0</span>
+<span class="pr">R1(config)#</span> <span class="cm">interface g0/0</span>
+<span class="pr">R1(config-if)#</span> <span class="cm">no shutdown</span></code></pre></div>
+  <h3>بررسی</h3>
+  <div class="cw"><button class="cpb" onclick="cp(this)">کپی</button>
+  <pre><code><span class="pr">R1#</span> <span class="cm">show ip route</span>
+<span class="pr">R1#</span> <span class="cm">show ip ospf neighbor</span>
+<span class="pr">R1#</span> <span class="cm">show ip protocols</span>
+<span class="pr">R1#</span> <span class="cm">show ip interface brief</span></code></pre></div>
+  <div class="card c-ok"><div class="ct">📌 تمرین</div><p>دو روتر با لینک سریال/اتترنت وصل کنید. OSPF راه بیندازید و با <code>show ip route</code> مسیرهای O را ببینید. سپس Inter-VLAN با subinterface پیاده کنید.</p></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('switching')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('routing')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('quiz')">آزمون ←</button>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="lesson" id="l-quiz">
+  <h1>آزمون نهایی</h1>
+  <p class="lead">روی گزینه کلیک کنید.</p>
+  <div id="quizBox"></div>
+  <div class="lf">
+    <button class="btn btn-g" onclick="showL('routing')">→ قبلی</button>
+    <button class="btn btn-ok" onclick="done('quiz')">خوانده شد</button>
+    <button class="btn btn-p" onclick="showL('welcome')">ابتدا</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<nav class="mbar">
+  <button onclick="toggleSide()"><span class="ico">☰</span>منو</button>
+  <button onclick="navP()"><span class="ico">→</span>قبلی</button>
+  <button onclick="showL('cli-sim')"><span class="ico">⌨</span>CLI</button>
+  <button onclick="navN()"><span class="ico">←</span>بعدی</button>
+</nav>
+<div class="toast" id="toast">کپی شد ✓</div>
+
+<script>
+const LS = ['welcome','roadmap','cli-sim','flashcards','lab','os-overview','ios-intro','cli-access','modes','user-exec','priv-exec','global','submodes','show-cmd','iface','save','nav','switching','routing','quiz'];
+const TRACK = LS.filter(x => !['roadmap'].includes(x));
+let doneSet = JSON.parse(localStorage.getItem('ios-prog')||'[]');
+let cur = 'welcome';
+let cliMode = 'user'; // user | priv | config | if
+let cliHost = 'Router';
+let cliIf = '';
+
+function updProg() {
+  const n = doneSet.filter(c => TRACK.includes(c)).length;
+  const p = Math.round(n / TRACK.length * 100);
+  document.getElementById('pFill').style.width = p+'%';
+  document.getElementById('pTxt').textContent = p+'٪';
+  const s = document.getElementById('statP'); if(s) s.textContent = p+'٪';
+  document.querySelectorAll('.ni').forEach(el => {
+    const id = el.dataset.l;
+    if (doneSet.includes(id)) { el.classList.add('done'); el.querySelector('.nc').textContent = '✓'; }
+    else {
+      el.classList.remove('done');
+      const i = TRACK.indexOf(id);
+      const special = {roadmap:'★','cli-sim':'⌨',flashcards:'🎴',lab:'🧪'};
+      el.querySelector('.nc').textContent = special[id] || (i>=0 ? i+1 : '•');
+    }
+  });
+}
+function showL(id) {
+  cur = id;
+  document.querySelectorAll('.lesson').forEach(l => l.classList.remove('on'));
+  const e = document.getElementById('l-'+id); if(e) e.classList.add('on');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  const nav = document.querySelector('.ni[data-l="'+id+'"]'); if(nav) nav.classList.add('on');
+  closeSide();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='cli-sim') setTimeout(()=>document.getElementById('cliIn').focus(),200);
+}
+function done(id) {
+  if(!doneSet.includes(id)){ doneSet.push(id); localStorage.setItem('ios-prog',JSON.stringify(doneSet)); updProg(); }
+  const i = LS.indexOf(id); if(i < LS.length-1) showL(LS[i+1]);
+}
+function resetP(){ if(confirm('پاک کردن پیشرفت؟')){ doneSet=[]; localStorage.removeItem('ios-prog'); localStorage.removeItem('ios-lab'); updProg(); renderLab(); showL('welcome'); }}
+function toggleSide(){ document.getElementById('side').classList.toggle('open'); document.getElementById('ov').classList.toggle('on'); }
+function closeSide(){ document.getElementById('side').classList.remove('open'); document.getElementById('ov').classList.remove('on'); }
+function navP(){ const i=LS.indexOf(cur); if(i>0) showL(LS[i-1]); }
+function navN(){ const i=LS.indexOf(cur); if(i<LS.length-1) showL(LS[i+1]); }
+function filterL(q){ q=q.trim().toLowerCase(); document.querySelectorAll('.ni').forEach(el=>{ const t=(el.dataset.t||el.textContent).toLowerCase(); el.style.display=!q||t.includes(q)?'':'none'; }); }
+function cp(btn){
+  const t=btn.parentElement.querySelector('pre').innerText;
+  navigator.clipboard.writeText(t).then(()=>{ btn.textContent='✓'; btn.classList.add('ok'); toast(); setTimeout(()=>{btn.textContent='کپی';btn.classList.remove('ok');},1400); });
+}
+function toast(){ const t=document.getElementById('toast'); t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),1600); }
+
+/* Theme */
+function toggleTheme(){
+  const h=document.documentElement;
+  const next = h.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', next);
+  localStorage.setItem('ios-theme', next);
+  document.getElementById('themeBtn').textContent = next==='dark' ? '🌙' : '☀️';
+  document.querySelector('meta[name="theme-color"]').content = next==='dark' ? '#0b0f19' : '#f8fafc';
+}
+(function(){ const t=localStorage.getItem('ios-theme')||'dark'; document.documentElement.setAttribute('data-theme',t); document.getElementById('themeBtn').textContent=t==='dark'?'🌙':'☀️'; })();
+
+/* Export progress */
+function exportProgress(){
+  const n = doneSet.filter(c=>TRACK.includes(c)).length;
+  const p = Math.round(n/TRACK.length*100);
+  const lines = [
+    'Cisco IOS Mastery — گزارش پیشرفت',
+    'تاریخ: '+new Date().toLocaleDateString('fa-IR'),
+    'پیشرفت کلی: '+p+'٪ ('+n+' از '+TRACK.length+')',
+    '',
+    'درس‌های تکمیل‌شده:',
+    ...doneSet.map(d=>'  ✓ '+d),
+    '',
+    'درس‌های باقی‌مانده:',
+    ...TRACK.filter(t=>!doneSet.includes(t)).map(d=>'  ○ '+d)
+  ];
+  const blob = new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ios-progress.txt';
+  a.click();
+  toast();
+}
+
+/* CLI Simulator */
+const cliOut = document.getElementById('cliOut');
+const cliIn = document.getElementById('cliIn');
+const cliPr = document.getElementById('cliPr');
+function cliPrint(html){ cliOut.innerHTML += html+'\n'; cliOut.scrollTop = cliOut.scrollHeight; }
+function cliClear(){ cliOut.innerHTML=''; cliPrint('<span class="ou">IOS Simulator ready. Type help or ?</span>'); }
+function updPrompt(){
+  if(cliMode==='user') cliPr.textContent = cliHost+'>';
+  else if(cliMode==='priv') cliPr.textContent = cliHost+'#';
+  else if(cliMode==='config') cliPr.textContent = cliHost+'(config)#';
+  else if(cliMode==='if') cliPr.textContent = cliHost+'(config-if)#';
+}
+cliIn.addEventListener('keydown', e => {
+  if(e.key!=='Enter') return;
+  const raw = cliIn.value.trim();
+  const cmd = raw.toLowerCase().replace(/\s+/g,' ');
+  cliPrint('<span class="p">'+cliPr.textContent+'</span> <span class="c">'+raw.replace(/</g,'&lt;')+'</span>');
+  cliIn.value = '';
+  if(!cmd) return;
+  // commands
+  if(cmd==='help'||cmd==='?'){
+    cliPrint('<span class="ou">enable, disable, conf t, hostname X, int g0/0, ip address A M, no shut, exit, end, show version, show ip int br, show run, ping X, clear</span>');
+  } else if(cmd==='clear'||cmd==='cls'){ cliClear(); }
+  else if(cmd==='enable'||cmd==='en'){
+    if(cliMode==='user'){ cliMode='priv'; updPrompt(); }
+    else cliPrint('<span class="e">% Already in privileged mode</span>');
+  } else if(cmd==='disable'){
+    if(cliMode==='priv'){ cliMode='user'; updPrompt(); }
+    else cliPrint('<span class="e">% Must be in privileged EXEC</span>');
+  } else if(cmd==='configure terminal'||cmd==='conf t'||cmd==='config t'){
+    if(cliMode==='priv'||cliMode==='config'||cliMode==='if'){ cliMode='config'; updPrompt(); }
+    else cliPrint('<span class="e">% Enter privileged mode first (enable)</span>');
+  } else if(cmd.startsWith('hostname ')){
+    if(cliMode==='config'){ cliHost=raw.split(/\s+/)[1]||'Router'; updPrompt(); }
+    else cliPrint('<span class="e">% Invalid input (config mode required)</span>');
+  } else if(cmd.startsWith('interface ')||cmd.startsWith('int ')){
+    if(cliMode==='config'||cliMode==='if'){ cliIf=raw.split(/\s+/).slice(1).join(' '); cliMode='if'; updPrompt(); }
+    else cliPrint('<span class="e">% Invalid input (config mode required)</span>');
+  } else if(cmd.startsWith('ip address ')){
+    if(cliMode==='if') cliPrint('<span class="ou">IP address configured on '+cliIf+'</span>');
+    else cliPrint('<span class="e">% Interface mode required</span>');
+  } else if(cmd==='no shutdown'||cmd==='no shut'){
+    if(cliMode==='if') cliPrint('<span class="ou">Interface '+cliIf+' enabled</span>');
+    else cliPrint('<span class="e">% Interface mode required</span>');
+  } else if(cmd==='exit'){
+    if(cliMode==='if'){ cliMode='config'; updPrompt(); }
+    else if(cliMode==='config'){ cliMode='priv'; updPrompt(); }
+    else if(cliMode==='priv'){ cliMode='user'; updPrompt(); }
+  } else if(cmd==='end'){
+    if(cliMode==='config'||cliMode==='if'){ cliMode='priv'; updPrompt(); }
+  } else if(cmd==='show version'||cmd==='sh ver'){
+    if(cliMode==='user'||cliMode==='priv') cliPrint('<span class="ou">Cisco IOS Software, Simulator Version 15.7\nRouter uptime is 1 hour\nModel: CISCO2911/K9</span>');
+    else cliPrint('<span class="e">% Incomplete command or wrong mode</span>');
+  } else if(cmd==='show ip interface brief'||cmd==='sh ip int br'||cmd==='show ip int brief'){
+    if(cliMode==='user'||cliMode==='priv') cliPrint('<span class="ou">Interface              IP-Address      OK? Method Status\nGigabitEthernet0/0     192.168.1.1     YES manual up/up\nGigabitEthernet0/1     unassigned      YES unset  admin down</span>');
+    else cliPrint('<span class="e">% Wrong mode (try: do show ip int br)</span>');
+  } else if(cmd==='show running-config'||cmd==='sh run'||cmd==='show run'){
+    if(cliMode==='priv') cliPrint('<span class="ou">Building configuration...\n!\nhostname '+cliHost+'\n!\ninterface GigabitEthernet0/0\n ip address 192.168.1.1 255.255.255.0\n!\nend</span>');
+    else cliPrint('<span class="e">% Privileged mode required</span>');
+  } else if(cmd.startsWith('ping ')){
+    if(cliMode==='user'||cliMode==='priv') cliPrint('<span class="ou">Sending 5 ICMP Echos...\n!!!!!\nSuccess rate is 100 percent (5/5)</span>');
+    else cliPrint('<span class="e">% Wrong mode</span>');
+  } else if(cmd.startsWith('do ')){
+    cliPrint('<span class="ou">(do command executed)</span>');
+  } else {
+    cliPrint('<span class="e">% Invalid input detected at \'^\' marker.\nType help for available commands.</span>');
+  }
+});
+cliClear();
+
+/* Flashcards */
+const cards = [
+  {f:'enable', b:'ورود از User EXEC به Privileged EXEC — پرامپت از > به # تغییر می‌کند'},
+  {f:'configure terminal', b:'ورود به Global Configuration Mode — پرامپت: (config)#'},
+  {f:'copy run start', b:'ذخیره running-config در startup-config (NVRAM) برای ماندگاری بعد از ریبوت'},
+  {f:'no shutdown', b:'فعال کردن اینترفیس — روی روترها پورت‌ها پیش‌فرض خاموش‌اند'},
+  {f:'show ip interface brief', b:'خلاصه وضعیت همه اینترفیس‌ها: IP، Status، Protocol'},
+  {f:'exit vs end', b:'exit = یک سطح بالاتر · end یا Ctrl+Z = مستقیم به Privileged EXEC'},
+  {f:'switchport mode trunk', b:'تنظیم پورت سوئیچ به‌عنوان Trunk برای عبور چند VLAN'},
+  {f:'ip route 0.0.0.0 0.0.0.0 GW', b:'Default Route — ترافیک ناشناخته را به Gateway می‌فرستد'},
+  {f:'router ospf 1', b:'فعال‌سازی فرآیند OSPF با Process ID برابر ۱'},
+  {f:'enable secret', b:'تنظیم پسورد Privileged به‌صورت hash‌شده (امن‌تر از enable password)'}
+];
+let fcIdx = 0;
+function renderFc(){
+  document.getElementById('fcFront').textContent = cards[fcIdx].f;
+  document.getElementById('fcBack').textContent = cards[fcIdx].b;
+  document.getElementById('fcCount').textContent = (fcIdx+1)+' / '+cards.length;
+  document.getElementById('flash').classList.remove('flipped');
+}
+function flipCard(){ document.getElementById('flash').classList.toggle('flipped'); }
+function fcNext(){ fcIdx=(fcIdx+1)%cards.length; renderFc(); }
+function fcPrev(){ fcIdx=(fcIdx-1+cards.length)%cards.length; renderFc(); }
+renderFc();
+
+/* Lab */
+const labSteps = [
+  'ورود به Privileged EXEC با دستور enable',
+  'ورود به Global Config با configure terminal',
+  'تنظیم hostname به R1',
+  'تنظیم enable secret',
+  'تنظیم IP روی GigabitEthernet0/0',
+  'اجرای no shutdown روی اینترفیس',
+  'خروج با end و ذخیره با copy run start',
+  'بررسی با show ip interface brief'
+];
+let labState = JSON.parse(localStorage.getItem('ios-lab')||'[]');
+function renderLab(){
+  const box = document.getElementById('labList');
+  box.innerHTML = labSteps.map((s,i)=>`
+    <div class="lab-item ${labState.includes(i)?'checked':''}" onclick="toggleLab(${i})">
+      <div class="lab-check">${labState.includes(i)?'✓':''}</div>
+      <div><strong>مرحله ${i+1}:</strong> ${s}</div>
+    </div>`).join('');
+  document.getElementById('labDone').style.display = labState.length===labSteps.length ? 'block' : 'none';
+}
+function toggleLab(i){
+  if(labState.includes(i)) labState = labState.filter(x=>x!==i);
+  else labState.push(i);
+  localStorage.setItem('ios-lab', JSON.stringify(labState));
+  renderLab();
+}
+renderLab();
+
+/* Quiz */
+const quiz = [
+  {q:'پرامپت User EXEC؟', o:['Router#','Router>','Router(config)#','Router(config-if)#'], a:1},
+  {q:'ورود به Privileged؟', o:['conf t','enable','privilege','admin'], a:1},
+  {q:'ذخیره config؟', o:['save','copy run start','write run','store'], a:1},
+  {q:'OS دیتاسنتر؟', o:['IOS','IOS XE','NX-OS','IOS XR'], a:2},
+  {q:'فعال کردن اینترفیس؟', o:['enable if','no shutdown','if up','activate'], a:1},
+  {q:'خروج مستقیم به Privileged؟', o:['exit','end / Ctrl+Z','disable','quit'], a:1},
+  {q:'خلاصه اینترفیس‌ها؟', o:['show interfaces','show ip interface brief','show ip route','show ver'], a:1},
+  {q:'running-config کجاست؟', o:['NVRAM','Flash','RAM','ROM'], a:2},
+  {q:'دستور Trunk؟', o:['switchport mode access','switchport mode trunk','vlan trunk','port trunk'], a:1},
+  {q:'Default Route؟', o:['ip route 0.0.0.0 0.0.0.0 GW','ip default','route default','ip route any'], a:0}
+];
+function renderQuiz(){
+  document.getElementById('quizBox').innerHTML = quiz.map((item,qi)=>`
+    <div class="card" style="margin-bottom:1.2rem">
+      <div class="ct">${qi+1}. ${item.q}</div>
+      ${item.o.map((opt,oi)=>`<div class="qo" data-q="${qi}" onclick="ans(${qi},${oi})">${opt}</div>`).join('')}
+    </div>`).join('');
+}
+function ans(qi,oi){
+  const opts=document.querySelectorAll('.qo[data-q="'+qi+'"]');
+  opts.forEach(o=>{o.classList.remove('ok','bad');o.style.pointerEvents='none';});
+  const c=quiz[qi].a;
+  if(oi===c) opts[oi].classList.add('ok'); else {opts[oi].classList.add('bad');opts[c].classList.add('ok');}
+}
+renderQuiz();
+
+/* Keyboard */
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowLeft'){e.preventDefault();navN();}
+  if(e.key==='ArrowRight'){e.preventDefault();navP();}
+  if(e.key==='m'||e.key==='M'||e.key==='م') toggleSide();
+  if(e.key==='r'||e.key==='R'||e.key==='ر') showL('roadmap');
+  if(e.key==='t'||e.key==='T'||e.key==='ت') toggleTheme();
+  if(e.key==='c'||e.key==='C'||e.key==='ش') showL('cli-sim');
+});
+
+updProg();
+</script>
+</body>
+</html>
